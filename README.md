@@ -6,21 +6,13 @@ Live online English, Spanish and German classes in small groups, with a free pla
 
 ## Status
 
-In progress. The groundwork is done: brand colors and fonts, the contact form with Telegram delivery, metadata, tests and a Lighthouse check. The pages below are next.
+Live at https://lingua-loop-bice.vercel.app
 
-Pages:
+What is built:
 
-- [ ] Home
-- [ ] Courses
-- [ ] Placement test
-- [ ] Schedule
-- [ ] Teachers
-- [ ] Contact
-
-Features:
-
-- [ ] 10-question placement test that recommends a course
-- [ ] Group schedule with filters
+- Home: bento hero, courses, how it works, teachers and a free trial form
+- Level test (`/test`): ten questions, a level from A1 to C1 and matching groups
+- Schedule (`/schedule`) filtered by language, level and time of day
 
 ## Design
 
@@ -76,11 +68,11 @@ Enquiries go to a Telegram chat. Copy `.env.example` to `.env.local` and fill in
 
 ## Deploying
 
-Import the repository in Vercel and add the two Telegram variables if the form should deliver leads. Update `url` in `content/site.ts` once the site has its final domain.
+Import the repository in Vercel and add the two Telegram variables if the form should deliver leads. If the domain changes, update `url` in `content/site.ts` and `tests/metadata.test.ts`.
 
 ## Credits
 
-Fonts are licensed under the SIL Open Font License; the license texts are in `app/fonts`. Photos will come from Unsplash and are credited in the site footer.
+Fonts are licensed under the SIL Open Font License; the license texts are in `app/fonts`. Photos are hotlinked from Unsplash and credited in the site footer.
 
 ## License
 
