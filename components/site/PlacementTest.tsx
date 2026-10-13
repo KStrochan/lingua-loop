@@ -62,7 +62,7 @@ export function PlacementTest() {
           Question {current + 1} of {questions.length}
         </p>
         <div className="h-3 overflow-hidden rounded-full bg-bg" role="progressbar" aria-valuemin={0} aria-valuemax={questions.length} aria-valuenow={current + 1} aria-label="Test progress">
-          <div className="h-full rounded-full bg-[var(--violet)] transition-[width]" style={{ width: `${((current + 1) / questions.length) * 100}%` }} />
+          <div className="h-full rounded-full bg-[var(--violet)] transition-[width] duration-500 ease-[cubic-bezier(0.34,1.4,0.64,1)]" style={{ width: `${((current + 1) / questions.length) * 100}%` }} />
         </div>
       </div>
       <fieldset className="grid gap-5">

@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
+import { Counter } from "@/components/anim/Counter";
+import { LiveLesson } from "@/components/anim/LiveLesson";
+import { Loop } from "@/components/anim/Loop";
+import { PlayWhenVisible } from "@/components/anim/PlayWhenVisible";
+import { Reveal } from "@/components/anim/Reveal";
 import { submitLead } from "@/app/actions";
 import { LeadForm } from "@/components/LeadForm";
 import { courses, howItWorks, photos, teachers } from "@/content/school";
@@ -46,13 +52,32 @@ export default function HomePage() {
             fetchPriority="high"
             className="object-cover"
           />
+          <PlayWhenVisible delay={1500} className="absolute inset-0">
+            <LiveLesson />
+          </PlayWhenVisible>
         </div>
         <div className="tile grid content-between gap-6 bg-lime md:col-span-1">
-          <p className="font-display text-5xl font-bold">6</p>
+          <p className="font-display text-5xl font-bold">
+            <Counter value={6} duration={900} />
+          </p>
+          <span aria-hidden="true" className="flex gap-1">
+            {Array.from({ length: 6 }, (_, i) => (
+              <span key={i} className="seat h-3 w-3 rounded-full bg-fg" style={{ "--d": `${0.3 + i * 0.1}s` } as CSSProperties} />
+            ))}
+          </span>
           <p className="font-semibold">students at most in every group</p>
         </div>
         <div className="tile grid content-between gap-6 bg-coral md:col-span-1">
-          <p className="font-display text-5xl font-bold">4.9</p>
+          <p className="font-display text-5xl font-bold">
+            <Counter value={4.9} decimals={1} duration={1200} />
+          </p>
+          <span aria-hidden="true" className="flex gap-1">
+            {Array.from({ length: 5 }, (_, i) => (
+              <svg key={i} viewBox="0 0 24 24" className="seat h-4 w-4" style={{ "--d": `${0.4 + i * 0.1}s` } as CSSProperties}>
+                <path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21.1l1.5-7L2 9.3l7-.8z" fill="#1B1440" />
+              </svg>
+            ))}
+          </span>
           <p className="font-semibold">average lesson rating this year</p>
         </div>
       </section>
@@ -60,10 +85,10 @@ export default function HomePage() {
       <section id="courses" className="mx-auto max-w-7xl scroll-mt-6 py-20">
         <h2 className="font-display text-4xl font-bold sm:text-5xl">Courses</h2>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {courses.map((c) => (
-            <article key={c.language} className="tile grid content-between gap-8 border-2 border-border bg-surface">
+          {courses.map((c, i) => (
+            <Reveal as="article" delay={i * 0.12} key={c.language} className="tile grid content-between gap-8 border-2 border-border bg-surface transition-transform duration-300 hover:-translate-y-1">
               <div className="grid gap-3">
-                <span aria-hidden="true" className="h-3 w-16 rounded-full" style={{ background: c.flagColor }} />
+                <span aria-hidden="true" className="grow-on-seen h-3 w-16 rounded-full" style={{ background: c.flagColor, "--d": `${0.3 + i * 0.12}s` } as CSSProperties} />
                 <h3 className="font-display text-3xl font-bold">{c.language}</h3>
                 <p className="text-muted">{c.text}</p>
               </div>
@@ -77,7 +102,7 @@ export default function HomePage() {
                   <dd className="font-bold">{c.price}</dd>
                 </div>
               </dl>
-            </article>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -92,11 +117,14 @@ export default function HomePage() {
             className="object-cover"
           />
         </div>
-        <div className="tile bg-fg text-white md:p-10">
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">How it works</h2>
+        <div className="tile relative overflow-hidden bg-fg text-white md:p-10">
+          <PlayWhenVisible className="absolute -right-4 -top-2 w-36 opacity-90 sm:w-44">
+            <Loop className="w-full" />
+          </PlayWhenVisible>
+          <h2 className="relative font-display text-3xl font-bold sm:text-4xl">How it works</h2>
           <ol className="mt-8 grid gap-6">
             {howItWorks.map((step, i) => (
-              <li key={step.title} className="grid grid-cols-[3rem_1fr] gap-4">
+              <Reveal as="li" delay={i * 0.15} key={step.title} className="grid grid-cols-[3rem_1fr] gap-4">
                 <span aria-hidden="true" className={`grid h-12 w-12 place-items-center rounded-full font-display text-xl font-bold ${tint[i]}`}>
                   {i + 1}
                 </span>
@@ -104,7 +132,7 @@ export default function HomePage() {
                   <h3 className="font-display text-xl font-bold">{step.title}</h3>
                   <p className="text-white/75">{step.text}</p>
                 </div>
-              </li>
+              </Reveal>
             ))}
           </ol>
         </div>
@@ -114,14 +142,14 @@ export default function HomePage() {
         <h2 className="font-display text-4xl font-bold sm:text-5xl">Teachers</h2>
         <ul className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
           {teachers.map((t, i) => (
-            <li key={t.name} className="tile grid content-start gap-3 bg-surface p-5">
-              <span aria-hidden="true" className={`grid h-14 w-14 place-items-center rounded-2xl font-display text-lg font-bold ${tint[i % 3]}`}>
+            <Reveal as="li" delay={(i % 6) * 0.08} key={t.name} className="tile grid content-start gap-3 bg-surface p-5">
+              <span aria-hidden="true" className={`chip-wiggle grid h-14 w-14 place-items-center rounded-2xl font-display text-lg font-bold ${tint[i % 3]}`}>
                 {initials(t.name)}
               </span>
               <h3 className="font-bold">{t.name}</h3>
               <p className="text-sm font-semibold text-[var(--violet)]">{t.langs}</p>
               <p className="text-sm text-muted">{t.note}</p>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>
